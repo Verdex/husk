@@ -1,0 +1,12 @@
+
+version | type | ...
+
+packet v0
+0 | length(x) = 4 bytes | x = ...
+
+connect request
+0 | 0 
+
+connect response
+0 | 0 | id = 4 bytes
+
