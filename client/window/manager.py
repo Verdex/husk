@@ -1,11 +1,17 @@
 
+import pygame
+
+White = [255, 255, 255]
+
 class SubWindow:
     
-    def __init__(self):
-        self.priority = 0
-        self.location = (0, 0)
+    def __init__(self, priority, location, screen):
+        self.priority = priority 
+        self.location = location
+        self.screen = screen 
 
     def resize(self):
+        # destroy screen and rebuild it with new size?
         pass
 
     def move(self):
@@ -26,4 +32,10 @@ class WindowManager:
         sorted( self._sub_windows, key=lambda sub: sub.priority )
 
     def update(self):
-        pass
+
+        self._screen.fill(White)
+
+        for sub in self._sub_windows:
+            self._screen.blit(sub.screen, sub.location)
+
+        pygame.display.update()
