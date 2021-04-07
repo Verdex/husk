@@ -1,4 +1,7 @@
 
+# Location is X, Y
+# Size is W, H
+
 import pygame
 from window.manager import WindowManager
 
