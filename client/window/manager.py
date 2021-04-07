@@ -5,20 +5,24 @@ White = [255, 255, 255]
 
 class SubWindow:
     
-    def __init__(self, priority, location, screen):
+    def __init__(self, priority, location, size):
         self.priority = priority 
         self.location = location
-        self.screen = screen 
+        self.size = size
+        self._screen = pygame.Surface(size) 
 
-    def resize(self):
-        # destroy screen and rebuild it with new size?
-        pass
+    def resize(self, size):
+        self._screen = pygame.Surface(size)
+        self.size = size
 
-    def move(self):
-        pass
+    def move(self, location):
+        self.location = location
     
-    def update(self):
-        pass
+    def render(self, updater):
+        updater(self._screen)
+
+    def update(self, updater):
+        return self._screen
 
 
 class WindowManager:
@@ -36,6 +40,7 @@ class WindowManager:
         self._screen.fill(White)
 
         for sub in self._sub_windows:
-            self._screen.blit(sub.screen, sub.location)
+            sub_screen = sub.update()
+            self._screen.blit(sub_screen, sub.location)
 
         pygame.display.update()
