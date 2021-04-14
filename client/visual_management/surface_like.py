@@ -3,7 +3,7 @@ import pygame
 
 White = [255, 255, 255]
 
-class SubWindow:
+class JustSurface:
     
     def __init__(self, priority, location, size):
         self.priority = priority 
@@ -25,15 +25,16 @@ class SubWindow:
         return self._screen
 
 
-class WindowManager:
+class SurfaceManager:
 
-    def __init__(self, screen):
-        self._screen = screen
-        self._sub_windows = []
+    def __init__(self, background):
+        self.priority = 0
+        self._background = background
+        self._surfaces = []
 
-    def add_sub_window(self, window):
-        self._sub_windows.append(window)
-        sorted( self._sub_windows, key=lambda sub: sub.priority )
+    def add_surface(self, surface):
+        self._surfaces.append(window)
+        sorted( self._surfaces, key=lambda sub: sub.priority )
 
     def update(self):
 
