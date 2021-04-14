@@ -3,8 +3,6 @@
 # Size is W, H
 
 import pygame
-from window.manager import WindowManager
-from window.console import Console
 
 EventLoopWait = 16
 DefaultHeight = 500
@@ -16,8 +14,6 @@ pygame.init()
 best_depth = pygame.display.mode_ok((DefaultWidth, DefaultHeight), 0, 32)
 screen = pygame.display.set_mode((DefaultWidth, DefaultHeight), pygame.RESIZABLE, best_depth) 
 
-window_manager = WindowManager(screen)
-console = Console()
 
 loop_start = 0
 
@@ -44,8 +40,8 @@ while active:
         elif event.type == pygame.QUIT:
             pass
 
-    console.update()
-    window_manager.update()
+
+    # TODO Update
 
     loop_end = pygame.time.get_ticks()
 
