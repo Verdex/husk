@@ -47,5 +47,6 @@ Aggregate {
     // TODO need live object manager
     // TODO animation manager?
 
+    top_level_aggregate.update()
 
 ```
