@@ -36,7 +36,7 @@ class AggregateSurface:
         for surface in sorted( self.surfaces.values(), lambda s: s.priority ):
             if type(surface) == AggregateSurface: 
                 surface.update()
-            else if type(surface) == SingleSurface:
+            elif type(surface) == SingleSurface:
                 self.surface.blit(surface.surface, surface.location)
             else:
                 raise SystemError(f"Encountered unknown surface type: {type(surface)}")
