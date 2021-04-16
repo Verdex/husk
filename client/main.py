@@ -5,7 +5,7 @@
 import pygame
 
 from id import LocalIdManager
-from surface_management.surfaces import AggregateSurface, SingleSurface
+from surface_management import AggregateSurface, SingleSurface
 
 EventLoopWait = 16
 DefaultHeight = 500
