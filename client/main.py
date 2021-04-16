@@ -4,7 +4,7 @@
 
 import pygame
 
-from id import LocalIdManager
+from database import LocalIdManager
 from surface_management import AggregateSurface, SingleSurface
 
 EventLoopWait = 16
