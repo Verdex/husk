@@ -39,7 +39,7 @@ while active:
         elif event.type == pygame.MOUSEBUTTONUP: 
             pass
         elif event.type == pygame.VIDEORESIZE:
-            pass
+            main_screen.size = (event.w, event.h)
         elif event.type == pygame.QUIT:
             active = False
 
