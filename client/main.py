@@ -20,6 +20,7 @@ best_depth = pygame.display.mode_ok((DefaultWidth, DefaultHeight), 0, 32)
 screen = pygame.display.set_mode((DefaultWidth, DefaultHeight), pygame.RESIZABLE, best_depth) 
 
 
+
 loop_start = 0
 
 # TODO 

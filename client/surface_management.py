@@ -1,12 +1,10 @@
 
+import pygame
 from database import LocalId
 
 class SingleSurface:
 
-    def __init__(self, id, surface, location, size, priority):
-        assert type(id) == LocalId, "id is not a local id"
-
-        self.id = id
+    def __init__(self, surface, location, size, priority):
         self.surface = surface
         self.location = location
         self.size = size
@@ -15,10 +13,7 @@ class SingleSurface:
 
 class AggregateSurface:
 
-    def __init__(self, id, surface, location, size, priority):
-        assert type(id) == LocalId, "id is not a local id"
-
-        self.id = id
+    def __init__(self, surface, location, size, priority):
         self.surface = surface
         self.location = location
         self.size = size
@@ -40,3 +35,10 @@ class AggregateSurface:
                 self.surface.blit(surface.surface, surface.location)
             else:
                 raise SystemError(f"Encountered unknown surface type: {type(surface)}")
+
+def init_main_screen(database, width, height):
+    best_depth = pygame.display.mode_ok((width, height), 0, 32)
+    screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, best_depth) 
+    main = AggregateSurface(screen, (0, 0), (width, height), 0)
+    database.add(main)
+    return main
