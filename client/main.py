@@ -4,7 +4,7 @@
 
 import pygame
 
-from database import LocalIdManager
+from database import init_local_database 
 from surface_management import AggregateSurface, SingleSurface
 
 EventLoopWait = 16
@@ -12,7 +12,7 @@ DefaultHeight = 500
 DefaultWidth = 800
 White = [255, 255, 255]
 
-local_id_manager = LocalIdManager()
+local_database = init_local_database()
 
 pygame.init()
 

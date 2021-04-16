@@ -15,4 +15,27 @@ class LocalId:
         self.value = value
 
 
+class LocalDatabase:
 
+    def __init__(self, id_manager):
+        self.data = {}
+        self.id_manager = id_manager 
+
+    def add(self, item):
+        id = self.id_manager.new()
+        item.id = id
+        self.data[id.value] = item
+        return id
+
+    def remove(self, id):
+        assert type(id) == LocalId, "Encountered non-local id in local database remove"
+        if item[id.value]:
+            del item[id.value]
+
+    def get(self, id):
+        assert type(id) == LocalId, "Encountered non-local id in local database get"
+        return self.data[id.value]
+        
+
+def init_local_database():
+    return LocalDatabase(LocalIdManager())
