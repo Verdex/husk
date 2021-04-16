@@ -37,11 +37,16 @@ Aggregate {
         process
 
     server_messages = get messages from server
+    // messages should just give high level commands and the client can decide how that is executed
+    // example spawn monster with id=blah gets translated into multiple low level details
 
-    // some are going to be moving existing objects
-    // some are going to be deleting existing objects
-    // some are going to be creating some object
-    // some are going to be activiting animations
+
+    // create object (sound, animation, image)
+    // delete object
+    // move visible object
+    // console text
+
+    // animations are definitely managed over time and sounds are potentially managed over time
 
     // TODO need resource lookup
     // TODO need live object manager
