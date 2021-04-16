@@ -1,6 +1,5 @@
 
 import pygame
-from database import LocalId
 
 class SingleSurface:
 
