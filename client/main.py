@@ -5,7 +5,7 @@
 import pygame
 
 from database import init_local_database 
-from surface_management import AggregateSurface, SingleSurface
+from surface_management import AggregateSurface, SingleSurface, init_main_screen
 
 EventLoopWait = 16
 DefaultHeight = 500
@@ -16,10 +16,7 @@ local_database = init_local_database()
 
 pygame.init()
 
-best_depth = pygame.display.mode_ok((DefaultWidth, DefaultHeight), 0, 32)
-screen = pygame.display.set_mode((DefaultWidth, DefaultHeight), pygame.RESIZABLE, best_depth) 
-
-
+main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
 
 loop_start = 0
 
@@ -44,10 +41,12 @@ while active:
         elif event.type == pygame.VIDEORESIZE:
             pass
         elif event.type == pygame.QUIT:
-            pass
+            active = False
 
-
-    # TODO Update
+    # redraw the main screen
+    main_screen.surface.fill(White)
+    main_screen.update()
+    pygame.display.update()
 
     loop_end = pygame.time.get_ticks()
 

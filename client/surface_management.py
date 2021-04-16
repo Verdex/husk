@@ -28,7 +28,7 @@ class AggregateSurface:
             del self.surfaces[id.value]
 
     def update(self):
-        for surface in sorted( self.surfaces.values(), lambda s: s.priority ):
+        for surface in sorted( self.surfaces.values(), key=lambda s: s.priority ):
             if type(surface) == AggregateSurface: 
                 surface.update()
             elif type(surface) == SingleSurface:
