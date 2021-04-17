@@ -34,9 +34,7 @@ class Console:
     def process_key(self, event):
         if event.key == pygame.K_RETURN:
             text = ''.join(self.entry)
-            if len(self.history) > 100:
-                self.history.pop()
-            self.history.insert(0, text)
+            limit_append(self.history, text)
             self.entry = []
             sep = [ s for s in text.split(' ') if s != '' ]
             if len(sep) > 0 and sep[0] in self.commands:
@@ -54,13 +52,18 @@ def close_program(self, sep):
     self.engine_manager.active = False
 
 def resize(self, sep):
-    size = (int(sep[1]), int(sep[2]))
+    input = convert_to_int(2, sep[1:])
+    if not input:
+        limit_append(self.history, "Usage: resize <width> <height>")
+        return
+    size = (input[0], input[1])
     self.database.remove(self.surface.id)
     self.main_screen.remove(self.surface.id)
     s = SingleSurface(pygame.Surface(size), self.surface.location, size, ConsolePriority)
     self.database.add(s)
     self.main_screen.add(s)
     self.surface = s
+    limit_append(self.history, "done")
     
 def move(self, sep):
     location = (int(sep[1]), int(sep[2]))
@@ -119,3 +122,20 @@ def init_console(database, main_screen, engine_manager):
     database.add(s)
     main_screen.add(s)
     return Console(s, database, main_screen, engine_manager)
+
+def limit_append(list, item):
+    if len(list) > 100:
+        list.pop()
+    list.insert(0, item)
+
+def convert_to_int(count, list):
+    if len(list) != count:
+        return None
+    ret = []
+    try:
+        for l in list:
+            ret.append(int(l)) 
+    except ValueError:
+        return None
+
+    return ret
