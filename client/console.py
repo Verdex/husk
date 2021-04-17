@@ -11,15 +11,30 @@ EntryLineOffset = 18
 
 class Console:
 
-    def __init__(self, surface):
+    def __init__(self, surface, database, main_screen):
         self.active = False
         self.surface = surface
+        self.database = database
+        self.main_screen = main_screen
         self.entry = []
         self.history = []
 
     def update_surface(self):
-        draw(self.surface, self.entry, self.history)
+        self.surface.surface.fill(White)
+        if self.active:
+            draw(self.surface, self.entry, self.history)
     
+    def process_key(self, event):
+        if event.key == pygame.K_RETURN:
+            # TODO try to execute command
+            pass
+        elif event.key == pygame.K_BACKSPACE:
+            if len(self.entry) > 0:
+                self.entry.pop()
+        elif event.key == pygame.K_ESCAPE:
+            self.active = False
+        elif event.unicode:
+            self.entry.append(event.unicode)
 
 def draw_box(surface):
     pygame.draw.line( surface.surface \
@@ -53,7 +68,6 @@ def draw_text(font, text, location, surface):
     surface.blit(text_surface, location)
 
 def draw(surface, char_list, history):
-    surface.surface.fill(White)
     draw_box(surface)
     draw_entry_line(surface)
 
@@ -73,4 +87,4 @@ def init_console(database, main_screen):
     s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), 0)
     database.add(s)
     main_screen.add(s)
-    return Console(s)
+    return Console(s, database, main_screen)

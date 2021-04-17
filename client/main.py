@@ -34,7 +34,13 @@ while active:
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            pass
+
+            if console.active:
+                console.process_key(event)
+
+            if event.mod & pygame.KMOD_SHIFT and event.key == pygame.K_SEMICOLON:
+                console.active = True
+
         elif event.type == pygame.KEYUP:
             pass
         elif event.type == pygame.MOUSEBUTTONDOWN: 
@@ -47,8 +53,6 @@ while active:
             active = False
 
     # redraw the main screen
-    console.entry = ['b', 'l', 'a', 'h']
-    console.history =  ["one", "two", "three"]
     console.update_surface()
 
     main_screen.surface.fill(White)
