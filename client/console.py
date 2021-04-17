@@ -2,6 +2,8 @@
 from surface_management import SingleSurface
 import pygame
 
+ConsolePriority = 1
+
 White = [255, 255, 255]
 Black = [0, 0, 0]
 
@@ -18,6 +20,7 @@ class Console:
         self.main_screen = main_screen
         self.entry = []
         self.history = []
+        self.commands = { "resize": lambda x, sep: x.resize(sep)}
 
     def update_surface(self):
         self.surface.surface.fill(White)
@@ -26,8 +29,11 @@ class Console:
     
     def process_key(self, event):
         if event.key == pygame.K_RETURN:
-            # TODO try to execute command
-            pass
+            text = ''.join(self.entry)
+            sep = [ s for s in text.split(' ') if s != '' ]
+            if sep[0] in self.commands:
+                self.commands[sep[0]](self, sep)
+
         elif event.key == pygame.K_BACKSPACE:
             if len(self.entry) > 0:
                 self.entry.pop()
@@ -35,6 +41,15 @@ class Console:
             self.active = False
         elif event.unicode:
             self.entry.append(event.unicode)
+
+    def resize(self, sep):
+        size = (int(sep[1]), int(sep[2]))
+        self.database.remove(self.surface.id)
+        self.main_screen.remove(self.surface.id)
+        s = SingleSurface(pygame.Surface(size), self.surface.location, size, ConsolePriority)
+        self.database.add(s)
+        self.main_screen.add(s)
+        self.surface = s
 
 def draw_box(surface):
     pygame.draw.line( surface.surface \
@@ -84,7 +99,7 @@ def draw(surface, char_list, history):
 
 
 def init_console(database, main_screen):
-    s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), 0)
+    s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), ConsolePriority)
     database.add(s)
     main_screen.add(s)
     return Console(s, database, main_screen)
