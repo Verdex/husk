@@ -30,8 +30,12 @@ class Console:
     def process_key(self, event):
         if event.key == pygame.K_RETURN:
             text = ''.join(self.entry)
+            if len(self.history) > 100:
+                self.history.pop()
+            self.history.insert(0, text)
+            self.entry = []
             sep = [ s for s in text.split(' ') if s != '' ]
-            if sep[0] in self.commands:
+            if len(sep) > 0 and sep[0] in self.commands:
                 self.commands[sep[0]](self, sep)
 
         elif event.key == pygame.K_BACKSPACE:
