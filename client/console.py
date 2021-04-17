@@ -66,8 +66,13 @@ def resize(self, sep):
     limit_append(self.history, "done")
     
 def move(self, sep):
-    location = (int(sep[1]), int(sep[2]))
+    input = convert_to_int(2, sep[1:])
+    if not input:
+        limit_append(self.history, "Usage: move <x> <y>")
+        return
+    location = (input[0], input[1])
     self.surface.location = location
+    limit_append(self.history, "done")
 
 
 def draw_box(surface):
