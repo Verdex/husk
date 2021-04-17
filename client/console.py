@@ -20,7 +20,9 @@ class Console:
         self.main_screen = main_screen
         self.entry = []
         self.history = []
-        self.commands = { "resize": lambda x, sep: x.resize(sep)}
+        self.commands = { "resize": lambda x, sep: x.resize(sep) \
+                        , "move" : lambda x, sep: x.move(sep) \
+                        }
 
     def update_surface(self):
         self.surface.surface.fill(White)
@@ -54,6 +56,10 @@ class Console:
         self.database.add(s)
         self.main_screen.add(s)
         self.surface = s
+    
+    def move(self, sep):
+        location = (int(sep[1]), int(sep[2]))
+        self.surface.location = location
 
 def draw_box(surface):
     pygame.draw.line( surface.surface \
