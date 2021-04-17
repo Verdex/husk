@@ -13,6 +13,12 @@ class Console:
 
     def __init__(self, surface):
         self.active = False
+        self.surface = surface
+        self.entry = []
+        self.history = []
+
+    def update_surface(self):
+        draw(self.surface, self.entry, self.history)
     
 
 def draw_box(surface):
@@ -47,8 +53,6 @@ def draw_text(font, text, location, surface):
     surface.blit(text_surface, location)
 
 def draw(surface, char_list, history):
-    assert type(surface) == SingleSurface
-
     surface.surface.fill(White)
     draw_box(surface)
     draw_entry_line(surface)
@@ -65,5 +69,8 @@ def draw(surface, char_list, history):
         offset += 1
 
 
-def init_console(database):
-    pass
+def init_console(database, main_screen):
+    s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), 0)
+    database.add(s)
+    main_screen.add(s)
+    return Console(s)

@@ -6,8 +6,7 @@ import pygame
 
 from database import init_local_database 
 from surface_management import AggregateSurface, SingleSurface, init_main_screen
-
-import console
+from console import init_console
 
 EventLoopWait = 16
 DefaultHeight = 500
@@ -19,11 +18,8 @@ local_database = init_local_database()
 pygame.init()
 
 main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
+console = init_console(local_database, main_screen)
 
-s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), 0)
-
-local_database.add(s)
-main_screen.add(s)
 
 loop_start = 0
 
@@ -51,7 +47,9 @@ while active:
             active = False
 
     # redraw the main screen
-    console.draw(s, ['b', 'l', 'a', 'h'], ["one", "two", "three"])
+    console.entry = ['b', 'l', 'a', 'h']
+    console.history =  ["one", "two", "three"]
+    console.update_surface()
 
     main_screen.surface.fill(White)
     main_screen.update()
