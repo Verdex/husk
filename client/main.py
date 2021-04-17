@@ -23,7 +23,6 @@ console = init_console(local_database, main_screen)
 
 loop_start = 0
 
-# TODO 
 active = True
 event_loop_delta = 0
 
