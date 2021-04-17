@@ -29,7 +29,7 @@ class LocalDatabase:
 
     def remove(self, id):
         assert type(id) == LocalId, "Encountered non-local id in local database remove"
-        if item[id.value]:
+        if id.value in item:
             del item[id.value]
 
     def get(self, id):

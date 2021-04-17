@@ -23,7 +23,7 @@ class AggregateSurface:
         self.surfaces[surface.id.value] = surface
     
     def remove(self, id):
-        if self.surfaces[id.value]:
+        if id.value in self.surfaces:
             del self.surfaces[id.value]
 
     def update(self):
