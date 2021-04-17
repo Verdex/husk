@@ -7,6 +7,7 @@ import pygame
 from database import init_local_database 
 from surface_management import AggregateSurface, SingleSurface, init_main_screen
 from console import init_console
+from engine.management import EngineManager
 
 EventLoopWait = 16
 DefaultHeight = 500
@@ -17,16 +18,16 @@ local_database = init_local_database()
 
 pygame.init()
 
+engine_manager = EngineManager()
 main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
 console = init_console(local_database, main_screen)
 
 
 loop_start = 0
 
-active = True
 event_loop_delta = 0
 
-while active:
+while engine_manager.active:
     ticks = pygame.time.get_ticks()
     event_loop_delta = ticks - loop_start
     loop_start = ticks
@@ -49,7 +50,7 @@ while active:
         elif event.type == pygame.VIDEORESIZE:
             main_screen.size = (event.w, event.h)
         elif event.type == pygame.QUIT:
-            active = False
+            engine_manager.active = False
 
     # redraw the main screen
     console.update_surface()
