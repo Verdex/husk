@@ -13,15 +13,17 @@ EntryLineOffset = 18
 
 class Console:
 
-    def __init__(self, surface, database, main_screen):
+    def __init__(self, surface, database, main_screen, engine_manager):
         self.active = False
         self.surface = surface
         self.database = database
         self.main_screen = main_screen
+        self.engine_manager = engine_manager
         self.entry = []
         self.history = []
-        self.commands = { "resize": lambda x, sep: x.resize(sep) \
-                        , "move" : lambda x, sep: x.move(sep) \
+        self.commands = { "resize": lambda x, sep: resize(x, sep) \
+                        , "move" : lambda x, sep: move(x, sep) \
+                        , "quit" : lambda x, sep: close_program(x, sep) \
                         }
 
     def update_surface(self):
@@ -48,18 +50,22 @@ class Console:
         elif event.unicode:
             self.entry.append(event.unicode)
 
-    def resize(self, sep):
-        size = (int(sep[1]), int(sep[2]))
-        self.database.remove(self.surface.id)
-        self.main_screen.remove(self.surface.id)
-        s = SingleSurface(pygame.Surface(size), self.surface.location, size, ConsolePriority)
-        self.database.add(s)
-        self.main_screen.add(s)
-        self.surface = s
+def close_program(self, sep):
+    self.engine_manager.active = False
+
+def resize(self, sep):
+    size = (int(sep[1]), int(sep[2]))
+    self.database.remove(self.surface.id)
+    self.main_screen.remove(self.surface.id)
+    s = SingleSurface(pygame.Surface(size), self.surface.location, size, ConsolePriority)
+    self.database.add(s)
+    self.main_screen.add(s)
+    self.surface = s
     
-    def move(self, sep):
-        location = (int(sep[1]), int(sep[2]))
-        self.surface.location = location
+def move(self, sep):
+    location = (int(sep[1]), int(sep[2]))
+    self.surface.location = location
+
 
 def draw_box(surface):
     pygame.draw.line( surface.surface \
@@ -108,8 +114,8 @@ def draw(surface, char_list, history):
         offset += 1
 
 
-def init_console(database, main_screen):
+def init_console(database, main_screen, engine_manager):
     s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), ConsolePriority)
     database.add(s)
     main_screen.add(s)
-    return Console(s, database, main_screen)
+    return Console(s, database, main_screen, engine_manager)

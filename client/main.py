@@ -20,7 +20,7 @@ pygame.init()
 
 engine_manager = EngineManager()
 main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
-console = init_console(local_database, main_screen)
+console = init_console(local_database, main_screen, engine_manager)
 
 
 loop_start = 0
