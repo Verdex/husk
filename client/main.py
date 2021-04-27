@@ -4,6 +4,8 @@
 
 import pygame
 
+pygame.init()
+
 from database import init_local_database 
 from surface_management import AggregateSurface, SingleSurface, init_main_screen
 from console import init_console
@@ -16,9 +18,7 @@ White = [255, 255, 255]
 
 local_database = init_local_database()
 
-pygame.init()
-
-engine_manager = EngineManager()
+engine_manager = EngineManager(local_database)
 main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
 console = init_console(local_database, main_screen, engine_manager)
 
