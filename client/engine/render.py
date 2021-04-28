@@ -1,14 +1,13 @@
 
 from engine.resources import AtSymbolId
+import color
 
 import pygame
-
-Black = [0, 0, 0]
 
 class AtSymbolRenderer:
     def __init__(self):
         font = pygame.font.SysFont(None, 18)
-        self.text_surface = font.render("@", True, Black)
+        self.text_surface = font.render("@", True, color.Black)
 
     def render(self, surface, location):
         surface.blit(self.text_surface, location)

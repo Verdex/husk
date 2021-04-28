@@ -1,11 +1,10 @@
 
 from surface_management import SingleSurface
+import color
 import pygame
 
 ConsolePriority = 1
 
-White = [255, 255, 255]
-Black = [0, 0, 0]
 
 TextHeight = 15
 HorizontalMargin = 10
@@ -27,7 +26,7 @@ class Console:
                         }
 
     def update_surface(self):
-        self.surface.surface.fill(White)
+        self.surface.surface.fill(color.White)
         if self.active:
             draw(self.surface, self.entry, self.history)
     
@@ -77,33 +76,33 @@ def move(self, sep):
 
 def draw_box(surface):
     pygame.draw.line( surface.surface \
-                    , Black \
+                    , color.Black \
                     , (0, 0) \
                     , (surface.size[0], 0))
 
     pygame.draw.line( surface.surface \
-                    , Black \
+                    , color.Black \
                     , (0, 0) \
                     , (0, surface.size[1]))
 
     pygame.draw.line( surface.surface \
-                    , Black \
+                    , color.Black \
                     , (surface.size[0] - 1, 0) \
                     , (surface.size[0] - 1, surface.size[1] - 1) ) 
 
     pygame.draw.line( surface.surface \
-                    , Black \
+                    , color.Black \
                     , (0, surface.size[1] - 1) \
                     , (surface.size[0] - 1, surface.size[1] -1) )
 
 def draw_entry_line(surface):
     pygame.draw.line( surface.surface \
-                    , Black \
+                    , color.Black \
                     , (0, surface.size[1] - EntryLineOffset) \
                     , (surface.size[0], surface.size[1] - EntryLineOffset))
 
 def draw_text(font, text, location, surface):
-    text_surface = font.render(text, True, Black)
+    text_surface = font.render(text, True, color.Black)
     surface.blit(text_surface, location)
 
 def draw(surface, char_list, history):

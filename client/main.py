@@ -10,11 +10,11 @@ from database import init_local_database
 from surface_management import AggregateSurface, SingleSurface, init_main_screen
 from console import init_console
 from engine.management import EngineManager
+import color
 
 EventLoopWait = 16
 DefaultHeight = 500
 DefaultWidth = 800
-White = [255, 255, 255]
 
 local_database = init_local_database()
 
@@ -55,7 +55,7 @@ while engine_manager.active:
     # redraw the main screen
     console.update_surface()
 
-    main_screen.surface.fill(White)
+    main_screen.surface.fill(color.White)
     main_screen.update()
     pygame.display.update()
 
