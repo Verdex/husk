@@ -9,10 +9,8 @@ pygame.init()
 from database import init_local_database 
 from surface_management import AggregateSurface \
                              , SingleSurface \
-                             , init_main_screen \
-                             , create_game_surface \
-                             , resize_game_surface 
-
+                             , init_main_screen 
+from engine.game_field import Field
 from console import init_console
 from engine.management import EngineManager
 import color
@@ -26,7 +24,7 @@ local_database = init_local_database()
 engine_manager = EngineManager(local_database)
 main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
 console = init_console(local_database, main_screen, engine_manager)
-game_surface = create_game_surface(local_database, main_screen, (DefaultWidth, DefaultHeight)) 
+game_field = Field(local_database, main_screen, (DefaultWidth, DefaultHeight))
 
 
 loop_start = 0
@@ -55,13 +53,13 @@ while engine_manager.active:
             pass
         elif event.type == pygame.VIDEORESIZE:
             main_screen.size = (event.w, event.h)
-            game_surface = resize_game_surface(game_surface, local_database, main_screen, main_screen.size)
+            game_field.resize(main_screen.size)
         elif event.type == pygame.QUIT:
             engine_manager.active = False
 
     # redraw the main screen
     console.update_surface()
-    game_surface.surface.fill(color.White) 
+    game_field.update()
     main_screen.surface.fill(color.White)
     main_screen.update()
     pygame.display.update()
