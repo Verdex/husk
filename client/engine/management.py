@@ -2,6 +2,7 @@
 from database import LocalDatabase, LocalId
 from engine.resources import ResourceId
 from engine.render import Renderers
+from engine.game_field import FieldObject, Field
 
 class EngineManager:
 
@@ -15,9 +16,17 @@ class EngineManager:
         assert type(local_id) == LocalId
         mob = self.local_database.get(local_id)
 
-    def spawn(self, resource_id, game_surface):
+    def spawn(self, resource_id, location, game_field):
         assert type(resource_id) == ResourceId
-        # TODO add the renderer to some list?
+        assert type(game_field) == Field
+        if resource_id.value in Renderers:
+            renderer = Renderers[resource_id.value]
+            fo = FieldObject(location, renderer)
+            id = self.database.add(fo)
+            game_field.add(id)
+            return True
+        else:
+            return False
     
     def despawn(self, local_id):
         assert type(local_id) == LocalId
