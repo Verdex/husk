@@ -35,6 +35,19 @@ class AggregateSurface:
             else:
                 raise SystemError(f"Encountered unknown surface type: {type(surface)}")
 
+def create_game_surface(database, main_screen, size):
+    assert type(main_screen) == AggregateSurface
+    s = SingleSurface(pygame.Surface(size), (0, 0), size, 0)
+    database.add(s)
+    main_screen.add(s)
+    return s
+
+def resize_game_surface(surface, database, main_screen, size):
+    assert type(surface) == SingleSurface
+    database.remove(surface.id)
+    main_screen.remove(surface.id)
+    return create_game_surface(database, main_screen, size)
+
 def init_main_screen(database, width, height):
     best_depth = pygame.display.mode_ok((width, height), 0, 32)
     screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, best_depth) 
