@@ -15,7 +15,7 @@ class EngineManager:
         assert type(local_id) == LocalId
         mob = self.local_database.get(local_id)
 
-    def spawn(self, resource_id):
+    def spawn(self, resource_id, game_surface):
         assert type(resource_id) == ResourceId
         # TODO add the renderer to some list?
     
