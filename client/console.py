@@ -1,5 +1,6 @@
 
 from surface_management import SingleSurface
+from engine.resources import ResourceId
 import color
 import pygame
 
@@ -23,6 +24,7 @@ class Console:
         self.commands = { "resize": lambda x, sep: resize(x, sep) \
                         , "move" : lambda x, sep: move(x, sep) \
                         , "quit" : lambda x, sep: close_program(x, sep) \
+                        , "spawn" : lambda x, sep: spawn_id(x, sep) \
                         }
 
     def update_surface(self):
@@ -46,6 +48,17 @@ class Console:
             self.active = False
         elif event.unicode:
             self.entry.append(event.unicode)
+
+def spawn_id(self, sep):
+    input = convert_to_int(3, sep[1:])
+    if not input:
+        limit_append(self.history, "Usage: spawn <id> <X> <Y>")
+        return
+    result = self.engine_manager.spawn(ResourceId(input[0]), (input[1], input[2]))
+    if result:
+        limit_append(self.history, "done")
+    else:
+        limit_append(self.history, "spawn failed")
 
 def close_program(self, sep):
     self.engine_manager.active = False

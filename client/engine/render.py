@@ -10,7 +10,7 @@ class AtSymbolRenderer:
         self.text_surface = font.render("@", True, color.Black)
 
     def render(self, surface, location):
-        surface.blit(self.text_surface, location)
+        surface.surface.blit(self.text_surface, location)
 
 
 Renderers = { AtSymbolId.value: AtSymbolRenderer() \

@@ -21,10 +21,10 @@ DefaultWidth = 800
 
 local_database = init_local_database()
 
-engine_manager = EngineManager(local_database)
 main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
-console = init_console(local_database, main_screen, engine_manager)
 game_field = Field(local_database, main_screen, (DefaultWidth, DefaultHeight))
+engine_manager = EngineManager(local_database, game_field)
+console = init_console(local_database, main_screen, engine_manager)
 
 
 loop_start = 0
