@@ -56,7 +56,7 @@ def spawn_id(self, sep):
         return
     result = self.engine_manager.spawn(ResourceId(input[0]), (input[1], input[2]))
     if result:
-        limit_append(self.history, "done")
+        limit_append(self.history, f"spawned with id {result.value}")
     else:
         limit_append(self.history, "spawn failed")
 

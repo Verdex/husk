@@ -25,7 +25,7 @@ class EngineManager:
             fo = FieldObject(location, renderer)
             id = self.local_database.add(fo)
             self.game_field.add(id)
-            return True
+            return id 
         else:
             return False
     
