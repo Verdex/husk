@@ -12,8 +12,14 @@ class EngineManager:
         self.game_field = game_field
         self.active = True
 
-    def move(self, id):
-        pass
+    def move(self, value, location):
+        id = MobFieldObjects.int_to_id(value)
+        fo = MobFieldObjects.get(id)
+        if fo:
+            fo.location = location 
+            return True
+        else:
+            return False
 
     def spawn(self, resource_id, location):
         assert type(resource_id) == ResourceId

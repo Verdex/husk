@@ -25,6 +25,7 @@ class Console:
                         , "quit" : lambda x, sep: close_program(x, sep) \
                         , "spawn" : lambda x, sep: spawn_id(x, sep) \
                         , "despawn" : lambda x, sep: despawn_id(x, sep) \
+                        , "move_mob" : lambda x, sep: move_mob_id(x, sep) \
                         }
 
     def activate(self):
@@ -59,6 +60,17 @@ class Console:
             self.deactivate()
         elif event.unicode:
             self.entry.append(event.unicode)
+
+def move_mob_id(self, sep):
+    input = convert_to_int(3, sep[1:])
+    if not input:
+        limit_append(self.history, "Usage move_mob: <id> <x> <y>")
+        return
+    result = self.engine_manager.move(input[0], (input[1], input[2]))
+    if result:
+        limit_append(self.history, "done")
+    else:
+        limit_append(self.history, "move failed")
 
 def despawn_id(self, sep):
     input = convert_to_int(1, sep[1:])
