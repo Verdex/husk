@@ -1,41 +1,43 @@
 
-class LocalIdManager:
-
-    def __init__(self):
-        self.current = 1
-
-    def new(self):
-        id = LocalId(self.current)
-        self.current += 1
-        return id
-
-class LocalId:
-
-    def __init__(self, value):
+class Id:
+    def __init__(self, name, value):
+        self.name = name
         self.value = value
 
+class Counter:
+    def __init__(self):
+        self.value = 0
 
-class LocalDatabase:
+    def inc(self):
+        self.value += 1
+        return self.value
 
-    def __init__(self, id_manager):
+class Database:
+    def __init__(self, name):
+        self.name = name
+        self.counter = Counter()
         self.data = {}
-        self.id_manager = id_manager 
 
     def add(self, item):
-        id = self.id_manager.new()
-        item.id = id
-        self.data[id.value] = item
-        return id
+        value = self.counter.inc()
+        item.id = Id(self.name, value)
+        self.data[value] = item
+        return item.id
 
     def remove(self, id):
-        assert type(id) == LocalId, "Encountered non-local id in local database remove"
+        assert id.name == self.name, f"Attempt to use unknown id: {id.name}.  Requires: {self.name}"
         if id.value in self.data:
             del self.data[id.value]
 
     def get(self, id):
-        assert type(id) == LocalId, "Encountered non-local id in local database get"
-        return self.data[id.value]
-        
+        assert id.name == self.name, f"Attempt to use unknown id: {id.name}.  Requires: {self.name}"
+        if id.value in self.data:
+            return self.data[id.value]
+        else:
+            return False
 
-def init_local_database():
-    return LocalDatabase(LocalIdManager())
+    def all(self):
+        return self.data.values()
+
+Surfaces = Database("Surfaces")
+MobFieldObjects = Database("MobFieldObjects")

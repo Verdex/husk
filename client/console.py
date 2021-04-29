@@ -1,4 +1,5 @@
 
+from database import Surfaces
 from surface_management import SingleSurface
 from engine.resources import ResourceId
 import color
@@ -13,11 +14,9 @@ EntryLineOffset = 18
 
 class Console:
 
-    def __init__(self, surface, database, main_screen, engine_manager):
+    def __init__(self, surface, engine_manager):
         self.active = False
         self.surface = surface
-        self.database = database
-        self.main_screen = main_screen
         self.engine_manager = engine_manager
         self.entry = []
         self.history = []
@@ -73,11 +72,9 @@ def resize(self, sep):
         limit_append(self.history, "Usage: resize <width> <height>")
         return
     size = (input[0], input[1])
-    self.database.remove(self.surface.id)
-    self.main_screen.remove(self.surface.id)
+    Surfaces.remove(self.surface.id)
     s = SingleSurface(pygame.Surface(size), self.surface.location, size, ConsolePriority)
-    self.database.add(s)
-    self.main_screen.add(s)
+    Surfaces.add(s)
     self.surface = s
     limit_append(self.history, "done")
     
@@ -138,11 +135,6 @@ def draw(surface, char_list, history):
         offset += 1
 
 
-def init_console(database, main_screen, engine_manager):
-    s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), ConsolePriority)
-    database.add(s)
-    main_screen.add(s)
-    return Console(s, database, main_screen, engine_manager)
 
 def limit_append(list, item):
     if len(list) > 100:
@@ -160,3 +152,8 @@ def convert_to_int(count, list):
         return None
 
     return ret
+
+def init_console(engine_manager):
+    s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), ConsolePriority)
+    Surfaces.add(s)
+    return Console(s, engine_manager)

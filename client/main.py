@@ -6,12 +6,10 @@ import pygame
 
 pygame.init()
 
-from database import init_local_database 
-from surface_management import AggregateSurface \
-                             , SingleSurface \
-                             , init_main_screen 
-from engine.game_field import Field
+from surface_management import init_main_screen
 from console import init_console
+
+from engine.game_field import Field
 from engine.management import EngineManager
 import color
 
@@ -19,12 +17,10 @@ EventLoopWait = 16
 DefaultHeight = 500
 DefaultWidth = 800
 
-local_database = init_local_database()
-
-main_screen = init_main_screen(local_database, DefaultWidth, DefaultHeight)
-game_field = Field(local_database, main_screen, (DefaultWidth, DefaultHeight))
-engine_manager = EngineManager(local_database, game_field)
-console = init_console(local_database, main_screen, engine_manager)
+main_screen = init_main_screen(DefaultWidth, DefaultHeight)
+game_field = Field((DefaultWidth, DefaultHeight))
+engine_manager = EngineManager(game_field)
+console = init_console(engine_manager)
 
 
 loop_start = 0

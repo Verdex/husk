@@ -1,5 +1,6 @@
 
-from surface_management import AggregateSurface, SingleSurface
+from surface_management import SingleSurface
+from database import Surfaces, MobFieldObjects 
 import color
 import pygame
 
@@ -10,39 +11,23 @@ class FieldObject:
 
 class Field:
 
-    def __init__(self, database, main_screen, size):
-        self.database = database
-        self.main_screen = main_screen
-        self.single_surface = create_game_surface(database, main_screen, size)
-        self.object_ids = []
+    def __init__(self, size):
+        self.single_surface = create_game_surface(size)
 
     def resize(self, size):
-        self.single_surface = resize_game_surface( self.single_surface \
-                                                 , self.database \
-                                                 , self.main_screen \
-                                                 , size )
+        self.single_surface = resize_game_surface( self.single_surface, size )
 
     def update(self):
         self.single_surface.surface.fill(color.White)
-        for id in self.object_ids:
-            field_object = self.database.get(id)
-            field_object.renderer.render(self.single_surface, field_object.location)
-    
-    def add(self, id):
-        self.object_ids.append(id)
-    
-    def remove(self, id):
-        pass
+        for mob_surface in MobFieldObjects.all():
+            mob_surface.renderer.render(self.single_surface, mob_surface.location)
 
-def create_game_surface(database, main_screen, size):
-    assert type(main_screen) == AggregateSurface
+def create_game_surface(size):
     s = SingleSurface(pygame.Surface(size), (0, 0), size, 0)
-    database.add(s)
-    main_screen.add(s)
+    Surfaces.add(s)
     return s
 
-def resize_game_surface(surface, database, main_screen, size):
+def resize_game_surface(surface, size):
     assert type(surface) == SingleSurface
-    database.remove(surface.id)
-    main_screen.remove(surface.id)
-    return create_game_surface(database, main_screen, size)
+    Surfaces.remove(surface.id)
+    return create_game_surface(size)

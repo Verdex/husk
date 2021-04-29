@@ -1,5 +1,6 @@
 
 import pygame
+from database import Surfaces
 
 class SingleSurface:
 
@@ -10,35 +11,20 @@ class SingleSurface:
         self.priority = priority
 
 
-class AggregateSurface:
+class MainScreen:
 
-    def __init__(self, surface, location, size, priority):
+    def __init__(self, surface, size):
         self.surface = surface
-        self.location = location
         self.size = size
-        self.priority = priority
-        self.surfaces = {} 
     
-    def add(self, surface):
-        self.surfaces[surface.id.value] = surface
-    
-    def remove(self, id):
-        if id.value in self.surfaces:
-            del self.surfaces[id.value]
-
     def update(self):
-        for surface in sorted( self.surfaces.values(), key=lambda s: s.priority ):
-            if type(surface) == AggregateSurface: 
-                surface.update()
-            elif type(surface) == SingleSurface:
-                self.surface.blit(surface.surface, surface.location)
-            else:
-                raise SystemError(f"Encountered unknown surface type: {type(surface)}")
+        for surface in sorted( Surfaces.all(), key=lambda s: s.priority ):
+            assert type(surface) == SingleSurface
+            self.surface.blit(surface.surface, surface.location)
 
 
-def init_main_screen(database, width, height):
+def init_main_screen(width, height):
     best_depth = pygame.display.mode_ok((width, height), 0, 32)
     screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, best_depth) 
-    main = AggregateSurface(screen, (0, 0), (width, height), 0)
-    database.add(main)
+    main = MainScreen(screen, (width, height))
     return main
