@@ -25,12 +25,12 @@ class Database:
         return item.id
 
     def remove(self, id):
-        assert id.name == self.name, f"Attempt to use unknown id: {id.name}.  Requires: {self.name}"
+        assert id.name == self.name
         if id.value in self.data:
             del self.data[id.value]
 
     def get(self, id):
-        assert id.name == self.name, f"Attempt to use unknown id: {id.name}.  Requires: {self.name}"
+        assert id.name == self.name
         if id.value in self.data:
             return self.data[id.value]
         else:
