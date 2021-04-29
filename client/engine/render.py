@@ -1,5 +1,5 @@
 
-from engine.resources import AtSymbolId
+from resources import AtSymbolId
 import color
 
 import pygame

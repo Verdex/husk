@@ -1,7 +1,7 @@
 
 from database import Surfaces
 from surface_management import SingleSurface
-from engine.resources import ResourceId
+from resources import ResourceId
 import color
 import pygame
 

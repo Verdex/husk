@@ -1,6 +1,6 @@
 
 from database import MobFieldObjects
-from engine.resources import ResourceId
+from resources import ResourceId
 from engine.render import Renderers
 from engine.game_field import FieldObject, Field
 
