@@ -9,6 +9,7 @@ class SingleSurface:
         self.location = location
         self.size = size
         self.priority = priority
+        self.visible = True
 
 
 class MainScreen:
@@ -20,7 +21,8 @@ class MainScreen:
     def update(self):
         for surface in sorted( Surfaces.all(), key=lambda s: s.priority ):
             assert type(surface) == SingleSurface
-            self.surface.blit(surface.surface, surface.location)
+            if surface.visible:
+                self.surface.blit(surface.surface, surface.location)
 
 
 def init_main_screen(width, height):

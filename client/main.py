@@ -39,7 +39,7 @@ while engine_manager.active:
                 console.process_key(event)
 
             if event.mod & pygame.KMOD_SHIFT and event.key == pygame.K_SEMICOLON:
-                console.active = True
+                console.activate()
 
         elif event.type == pygame.KEYUP:
             pass
@@ -54,7 +54,7 @@ while engine_manager.active:
             engine_manager.active = False
 
     # redraw the main screen
-    console.update_surface()
+    console.update()
     game_field.update()
     main_screen.surface.fill(color.White)
     main_screen.update()

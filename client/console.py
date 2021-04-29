@@ -16,6 +16,7 @@ class Console:
 
     def __init__(self, surface, engine_manager):
         self.active = False
+        surface.visible = False
         self.surface = surface
         self.engine_manager = engine_manager
         self.entry = []
@@ -27,9 +28,17 @@ class Console:
                         , "despawn" : lambda x, sep: despawn_id(x, sep) \
                         }
 
-    def update_surface(self):
-        self.surface.surface.fill(color.White)
+    def activate(self):
+        self.active = True
+        self.surface.visible = True
+
+    def deactivate(self):
+        self.active = False
+        self.surface.visible = False
+
+    def update(self):
         if self.active:
+            self.surface.surface.fill(color.White)
             draw(self.surface, self.entry, self.history)
     
     def process_key(self, event):
@@ -45,7 +54,7 @@ class Console:
             if len(self.entry) > 0:
                 self.entry.pop()
         elif event.key == pygame.K_ESCAPE:
-            self.active = False
+            self.deactivate()
         elif event.unicode:
             self.entry.append(event.unicode)
 
