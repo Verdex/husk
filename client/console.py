@@ -14,10 +14,9 @@ EntryLineOffset = 18
 
 class Console:
 
-    def __init__(self, surface, engine_manager):
+    def __init__(self, surface_id, engine_manager):
         self.active = False
-        surface.visible = False
-        self.surface = surface
+        self.surface_id = surface_id
         self.engine_manager = engine_manager
         self.entry = []
         self.history = []
@@ -30,16 +29,19 @@ class Console:
 
     def activate(self):
         self.active = True
-        self.surface.visible = True
+        surface = Surfaces.get(self.surface_id)
+        surface.visible = True
 
     def deactivate(self):
         self.active = False
-        self.surface.visible = False
+        surface = Surfaces.get(self.surface_id)
+        surface.visible = False
 
     def update(self):
         if self.active:
-            self.surface.surface.fill(color.White)
-            draw(self.surface, self.entry, self.history)
+            surface = Surfaces.get(self.surface_id)
+            surface.surface.fill(color.White)
+            draw(surface, self.entry, self.history)
     
     def process_key(self, event):
         if event.key == pygame.K_RETURN:
@@ -81,10 +83,11 @@ def resize(self, sep):
         limit_append(self.history, "Usage: resize <width> <height>")
         return
     size = (input[0], input[1])
-    Surfaces.remove(self.surface.id)
-    s = SingleSurface(pygame.Surface(size), self.surface.location, size, ConsolePriority)
-    Surfaces.add(s)
-    self.surface = s
+    old_surface = Surfaces.get(self.surface_id)
+    Surfaces.remove(self.surface_id)
+    s = SingleSurface(pygame.Surface(size), old_surface.location, size, ConsolePriority)
+    id = Surfaces.add(s)
+    self.surface_id = id
     limit_append(self.history, "done")
     
 def move(self, sep):
@@ -93,7 +96,8 @@ def move(self, sep):
         limit_append(self.history, "Usage: move <x> <y>")
         return
     location = (input[0], input[1])
-    self.surface.location = location
+    surface = Surfaces.get(self.surface_id)
+    surface.location = location
     limit_append(self.history, "done")
 
 
@@ -164,5 +168,6 @@ def convert_to_int(count, list):
 
 def init_console(engine_manager):
     s = SingleSurface(pygame.Surface((200, 200)), (10, 10), (200, 200), ConsolePriority)
-    Surfaces.add(s)
-    return Console(s, engine_manager)
+    s.visible = False
+    id = Surfaces.add(s)
+    return Console(id, engine_manager)
