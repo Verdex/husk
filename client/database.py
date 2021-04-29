@@ -39,5 +39,8 @@ class Database:
     def all(self):
         return self.data.values()
 
+    def int_to_id(self, value):
+        return Id(self.name, value)
+
 Surfaces = Database("Surfaces")
 MobFieldObjects = Database("MobFieldObjects")

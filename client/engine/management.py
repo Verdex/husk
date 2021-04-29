@@ -12,9 +12,8 @@ class EngineManager:
         self.game_field = game_field
         self.active = True
 
-    def move(self, local_id):
-        assert type(local_id) == LocalId
-        #mob = self.local_database.get(local_id)
+    def move(self, id):
+        pass
 
     def spawn(self, resource_id, location):
         assert type(resource_id) == ResourceId
@@ -26,7 +25,6 @@ class EngineManager:
         else:
             return False
     
-    def despawn(self, local_id):
-        assert type(local_id) == LocalId
-        self.local_database.remove(local_id)
-        # TODO need to remove from game field
+    def despawn(self, value):
+        id = MobFieldObjects.int_to_id(value)
+        MobFieldObjects.remove(id)

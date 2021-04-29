@@ -61,7 +61,12 @@ class Console:
             self.entry.append(event.unicode)
 
 def despawn_id(self, sep):
-    pass
+    input = convert_to_int(1, sep[1:])
+    if not input:
+        limit_append(self.history, "Usage despawn: <id>")
+        return
+    self.engine_manager.despawn(input[0])
+    limit_append(self.history, "done")
 
 def spawn_id(self, sep):
     input = convert_to_int(3, sep[1:])
