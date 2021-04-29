@@ -25,6 +25,7 @@ class Console:
                         , "move" : lambda x, sep: move(x, sep) \
                         , "quit" : lambda x, sep: close_program(x, sep) \
                         , "spawn" : lambda x, sep: spawn_id(x, sep) \
+                        , "despawn" : lambda x, sep: despawn_id(x, sep) \
                         }
 
     def update_surface(self):
@@ -48,6 +49,9 @@ class Console:
             self.active = False
         elif event.unicode:
             self.entry.append(event.unicode)
+
+def despawn_id(self, sep):
+    pass
 
 def spawn_id(self, sep):
     input = convert_to_int(3, sep[1:])

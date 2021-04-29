@@ -32,3 +32,4 @@ class EngineManager:
     def despawn(self, local_id):
         assert type(local_id) == LocalId
         self.local_database.remove(local_id)
+        # TODO need to remove from game field

@@ -30,6 +30,9 @@ class Field:
     
     def add(self, id):
         self.object_ids.append(id)
+    
+    def remove(self, id):
+        pass
 
 def create_game_surface(database, main_screen, size):
     assert type(main_screen) == AggregateSurface
