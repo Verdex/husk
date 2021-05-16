@@ -1,12 +1,17 @@
 
-version | type | ...
 
 packet v0
 0 | length(x) = 4 bytes | x = ...
 
 connect request
-0 | 0 
+// TOOD ? 0 | 0 
 
 connect response
-0 | 0 | id = 4 bytes
+// TODO ? 0 | 0 | id = 4 bytes
 
+move me
+0x00 01 | direction
+    direction = north : 0x01
+                east  : 0x02
+                south : 0x03
+                west  : 0x04
