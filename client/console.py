@@ -5,6 +5,8 @@ from resources import ResourceId
 import color
 import pygame
 
+from comms.server import GameServer
+
 ConsolePriority = 1
 
 
@@ -26,6 +28,7 @@ class Console:
                         , "spawn" : lambda x, sep: spawn_id(x, sep) \
                         , "despawn" : lambda x, sep: despawn_id(x, sep) \
                         , "move_mob" : lambda x, sep: move_mob_id(x, sep) \
+                        , "test" : lambda x, sep: test(x, sep) \
                         }
 
     def activate(self):
@@ -60,6 +63,11 @@ class Console:
             self.deactivate()
         elif event.unicode:
             self.entry.append(event.unicode)
+
+def test(self, sep):
+    limit_append(self.history, "TEST")
+    input = convert_to_int(1, sep[1:])
+    GameServer.test(input[0])
 
 def move_mob_id(self, sep):
     input = convert_to_int(3, sep[1:])

@@ -20,8 +20,18 @@ class Server:
     def __init__(self):
         pass
 
+    def test(self, port):
+        print(f"PORT {port}")
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as x:
+            x.connect(('127.0.0.1', port))
+            z = bytearray(struct.pack("!HH", 0xAAFF, 0xEECC))
+            z.extend(struct.pack('!H', 0x1234))
+            x.sendall(z)
+
     def send_requests():
-        rs = OutGoingRequests.output()
+        pass
+        #rs = OutGoingRequests.output()
+        #struct.pack('!')
 
 
 
