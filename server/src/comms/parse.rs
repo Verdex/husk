@@ -1,26 +1,31 @@
 
-use std::io::Cursor;
-use std::io::{Error, ErrorKind};
+use std::io::{Error, ErrorKind, Cursor};
 
 use byteorder::{NetworkEndian, ReadBytesExt};
 
 use super::data::{Request, Direction};
 
-pub fn parse_request(input : Vec<u8>) -> std::io::Result<Vec<Request>> {
-    let mut c = Cursor::new(input);
-
+pub fn parse_request(input : &mut Cursor<Vec<u8>>) -> std::io::Result<Vec<Request>> {
     let mut requests = vec! [];
     loop {
-        let maybe_opcode = c.read_u16::<NetworkEndian>();
+        let maybe_opcode = input.read_u16::<NetworkEndian>();
         if matches!(maybe_opcode, Err(_)) {
             return Ok(requests);
         }
 
         match maybe_opcode.unwrap() {
-            0x0001 => { requests.push(parse_move(&mut c)?) }, 
+            0x0001 => { requests.push(parse_move(input)?) }, 
             x => { return e(format!("Failed to parse Request because of unknown value: {}", x)); },
         }
     }
+}
+
+pub fn parse_id(input : &mut Cursor<Vec<u8>>) -> std::io::Result<u32> {
+    input.read_u32::<NetworkEndian>()
+}
+
+pub fn parse_length(input : &mut Cursor<Vec<u8>>) -> std::io::Result<u32> {
+    input.read_u32::<NetworkEndian>()
 }
 
 fn parse_move(input : &mut Cursor<Vec<u8>> ) -> std::io::Result<Request> {

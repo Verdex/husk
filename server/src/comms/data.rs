@@ -14,6 +14,6 @@ pub enum Request {
 
 #[derive(Debug)]
 pub struct UserRequests {
-    id : u32,
-
+    pub id : u32,
+    pub requests : Vec<Request>,
 }
