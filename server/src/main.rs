@@ -2,6 +2,13 @@
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 
+extern crate byteorder; 
+
+mod comms;
+
+use comms::parse::*;
+use comms::data::{Request};
+
 fn main() -> std::io::Result<()> {
 
     let listener = TcpListener::bind("127.0.0.1:0")?;
