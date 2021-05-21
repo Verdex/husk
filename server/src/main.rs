@@ -6,8 +6,7 @@ extern crate byteorder;
 
 mod comms;
 
-use comms::parse::*;
-use comms::data::{Request};
+use comms::stream::{read_requests};
 
 fn main() -> std::io::Result<()> {
 
@@ -20,23 +19,10 @@ fn main() -> std::io::Result<()> {
     loop {
         let (mut sock, addr) = listener.accept()?;
 
-        blarg(&mut sock);
-        println!("blarg");
+        let user_requests = read_requests(&mut sock)?;
+
+        println!("requets = {:?}", user_requests);
     }
 
-    Ok(())
-}
-
-fn blarg(x : &mut TcpStream) -> std::io::Result<()> {
-    let mut buffer = vec![];
-    println!("first");
-    x.read_to_end(&mut buffer)?;
-    for xlet in buffer {
-        print!("{:x?} ", xlet);
-    }
-    println!("");
-    println!("read");
-    x.write(&[0, 1, 2])?;
-    println!("write");
     Ok(())
 }

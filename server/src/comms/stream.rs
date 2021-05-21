@@ -19,7 +19,7 @@ pub fn read_requests(stream : &mut TcpStream) -> std::io::Result<UserRequests> {
         return e(format!("Found unknown packet version: {}", buffer[0]));
     }
 
-    let mut input = Cursor::new(buffer);
+    let mut input = Cursor::new(&buffer[1..]);
 
     let id = parse_id(&mut input)?;
     let length = parse_length(&mut input)?;

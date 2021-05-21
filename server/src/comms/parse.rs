@@ -5,7 +5,7 @@ use byteorder::{NetworkEndian, ReadBytesExt};
 
 use super::data::{Request, Direction};
 
-pub fn parse_request(input : &mut Cursor<Vec<u8>>) -> std::io::Result<Vec<Request>> {
+pub fn parse_request(input : &mut Cursor<&[u8]>) -> std::io::Result<Vec<Request>> {
     let mut requests = vec! [];
     loop {
         let maybe_opcode = input.read_u16::<NetworkEndian>();
@@ -20,15 +20,15 @@ pub fn parse_request(input : &mut Cursor<Vec<u8>>) -> std::io::Result<Vec<Reques
     }
 }
 
-pub fn parse_id(input : &mut Cursor<Vec<u8>>) -> std::io::Result<u32> {
+pub fn parse_id(input : &mut Cursor<&[u8]>) -> std::io::Result<u32> {
     input.read_u32::<NetworkEndian>()
 }
 
-pub fn parse_length(input : &mut Cursor<Vec<u8>>) -> std::io::Result<u32> {
+pub fn parse_length(input : &mut Cursor<&[u8]>) -> std::io::Result<u32> {
     input.read_u32::<NetworkEndian>()
 }
 
-fn parse_move(input : &mut Cursor<Vec<u8>> ) -> std::io::Result<Request> {
+fn parse_move(input : &mut Cursor<&[u8]> ) -> std::io::Result<Request> {
     let w = |d| Ok(Request::Move(d));
 
     let direction = input.read_u8()?;
