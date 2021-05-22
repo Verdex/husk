@@ -28,6 +28,7 @@ class Console:
                         , "spawn" : lambda x, sep: spawn_id(x, sep) \
                         , "despawn" : lambda x, sep: despawn_id(x, sep) \
                         , "move_mob" : lambda x, sep: move_mob_id(x, sep) \
+                        , "connect_to_server" : lambda x, sep: connect_to_server(x, sep) \
                         , "test" : lambda x, sep: test(x, sep) \
                         }
 
@@ -63,6 +64,21 @@ class Console:
             self.deactivate()
         elif event.unicode:
             self.entry.append(event.unicode)
+
+def connect_to_server(self, sep):
+    values = sep[0].split(":")
+    if len(values) != 2:
+        limit_append(self.history, "Usage: connect_to_server x.y.z.w:port")
+        return
+    port = convert_to_int(1, values[1:])
+    if not port:
+        limit_append(self.history, "port must be an integer")
+        return
+
+    limit_append(self.history, f"Attempting to connect to {values[0]}:{port}")
+    success = GameServer.connect_to_server(values[0], port)
+    if not success:
+        limit_append(self.history, "Connection Failed")
 
 def test(self, sep):
     limit_append(self.history, "TEST")

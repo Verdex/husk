@@ -1,6 +1,11 @@
 
 import struct
 
+class RequestPlayerId:
+
+    def to_bytes(self):
+        return struct.pack("!H", 0x0002)
+
 class Move:
 
     def __init__(self, direction):

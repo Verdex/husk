@@ -2,9 +2,7 @@
 import struct
 import socket
 
-from functools import reduce
-
-from comms.request import Move  # TODO remove
+from comms.request import RequestPlayerId 
 
 class Requests:
     def __init__(self):
@@ -21,35 +19,45 @@ class Requests:
 class Server:
 
     def __init__(self):
-        pass
+        self.port = None
+        self.ip = None
+        self.player_id = None
 
-    def test(self, port):
-        print(f"PORT {port}")
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as x:
-            x.connect(('127.0.0.1', port))
-            request = Move(Move.North)
-            bs = request.to_bytes()
-            z = bytearray(struct.pack("!B", 0x00))
-            z.extend(struct.pack("!I", 0))
-            z.extend(struct.pack("!I", len(bs)))
-            z.extend(bs)
-            x.sendall(z)
-
-    def send_requests():
+    def connect_to_server(self, ip, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect(('127.0.0.1', port)) # TODO need to be able to set ip and port
-            requests = OutGoingRequests.output() 
-            requests_bytes = [r.to_bytes() for r in requests]
-            packet_length = reduce( lambda a, b: len(a) + len(b), requests_bytes ) # TODO does this work
-
-            output = bytearray(struct.pack("!B", 0x00))         # packet version
-            output.extend(struct.pack("!I", 0))                 # TODO player id
-            output.extend(struct.pack("!I", packet_length)))    # packet length
-
-            for bs in requests_bytes:
-                output.extend(bs)
-
+            s.connect((ip, port))
+            output = create_request_packet([RequestPlayerId], 0)
             s.sendall(output)
+            #TODO wait for response that has player id
+            #TODO if everything is okay, then we can set ip, port, and player_id
+            self.ip = ip
+            self.port = port
+            self.player_id = 0
+            #TODO need to return success or failiure for the console to communicate to the player
+
+    def send_requests(self):
+        requests = OutGoingRequests.output()
+        if len(requests) == 0:
+            return
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.connect((self.ip, self.port)) 
+            output = create_request_packet(requests, self.player_id)
+            s.sendall(output)
+
+def create_request_packet(requests, player_id):
+    requests_bytes = [r.to_bytes() for r in requests]
+    packet_length = 0
+    for bs in requests_bytes:
+        packet_length += len(bs)
+
+    output = bytearray(struct.pack("!B", 0x00))         # packet version
+    output.extend(struct.pack("!I", player_id))        
+    output.extend(struct.pack("!I", packet_length))    
+
+    for bs in requests_bytes:
+        output.extend(bs)
+
+    return output
 
 
 OutGoingRequests = Requests()

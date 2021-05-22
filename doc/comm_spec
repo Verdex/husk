@@ -3,15 +3,12 @@
 packet v0
 0 | id = 4 bytes | length(x) = 4 bytes | x = ...
 
-connect request
-// TOOD ? 0 | 0 
-
-connect response
-// TODO ? 0 | 0 | id = 4 bytes
-
 move me
 0x00 01 | direction
     direction = north : 0x01
                 east  : 0x02
                 south : 0x03
                 west  : 0x04
+
+request player id request
+0x00 02 
