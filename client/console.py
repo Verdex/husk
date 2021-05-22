@@ -29,7 +29,6 @@ class Console:
                         , "despawn" : lambda x, sep: despawn_id(x, sep) \
                         , "move_mob" : lambda x, sep: move_mob_id(x, sep) \
                         , "connect_to_server" : lambda x, sep: connect_to_server(x, sep) \
-                        , "test" : lambda x, sep: test(x, sep) \
                         }
 
     def activate(self):
@@ -79,11 +78,6 @@ def connect_to_server(self, sep):
     success = GameServer.connect_to_server(values[0], port)
     if not success:
         limit_append(self.history, "Connection Failed")
-
-def test(self, sep):
-    limit_append(self.history, "TEST")
-    input = convert_to_int(1, sep[1:])
-    GameServer.test(input[0])
 
 def move_mob_id(self, sep):
     input = convert_to_int(3, sep[1:])
