@@ -15,6 +15,7 @@ pub fn parse_request(input : &mut Cursor<&[u8]>) -> std::io::Result<Vec<Request>
 
         match maybe_opcode.unwrap() {
             0x0001 => { requests.push(parse_move(input)?) }, 
+            0x0002 => { requests.push(Request::RequestPlayerId) },
             x => { return e(format!("Failed to parse Request because of unknown value: {}", x)); },
         }
     }

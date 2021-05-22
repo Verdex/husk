@@ -9,7 +9,8 @@ pub enum Direction {
 
 #[derive(Debug)]
 pub enum Request {
-    Move(Direction) 
+    Move(Direction),
+    RequestPlayerId,
 }
 
 #[derive(Debug)]
