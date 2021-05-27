@@ -1,14 +1,17 @@
 
-use std::io::{Read, Write};
-use std::net::{TcpListener, TcpStream};
+use std::net::TcpListener;
+use std::sync::mpsc;
 
 extern crate byteorder; 
 
 mod comms;
+mod processing;
 
 use comms::stream::{read_requests};
 
 fn main() -> std::io::Result<()> {
+
+    let (sender, receiver) = mpsc::channel();
 
     let listener = TcpListener::bind("127.0.0.1:0")?;
 
