@@ -1,19 +1,33 @@
 
 use std::net::TcpStream;
-use std::mpsc::Receiver;
-use std::thread;
+use std::sync::mpsc::Receiver;
+use std::thread::{self, JoinHandle};
 
-use comms::stream::{read_requests};
+use crate::comms::stream::{read_requests};
+use crate::data::ProcComm;
 
-//stream : &mut TcpStream
 
-pub fn start(receiver : Receiver<TcpStream>) { // TODO receiver should be Receiver<TcpStream | Stop>
+pub fn start(receiver : Receiver<ProcComm<TcpStream>>) -> JoinHandle<()> {
 
-    thread::spawn(move || {
+    let handle = thread::spawn(move || {
         loop {
+            let msg = receiver.recv().expect("Receive Failure in Process");
 
+            match msg {
+                ProcComm::Message(stream) => process_stream(stream),
+                ProcComm::Stop => break,
+            }
         }
     });
-    let user_requests = read_requests(stream)?;
 
+    handle
+}
+
+fn process_stream(mut stream : TcpStream) {
+    let user_requests_result = read_requests(&mut stream);
+
+    match user_requests_result {
+        Ok(user_requests) => println!("USER REQUESTS"),
+        Err(e) => println!("Encountered error while parsing TCP Stream: {}", e),
+    }
 }

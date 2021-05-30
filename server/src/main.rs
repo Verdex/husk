@@ -4,14 +4,18 @@ use std::sync::mpsc;
 
 extern crate byteorder; 
 
+mod data;
 mod comms;
 mod processing;
 
-use comms::stream::{read_requests};
+use processing::process;
+use data::ProcComm;
 
 fn main() -> std::io::Result<()> {
 
-    let (sender, receiver) = mpsc::channel();
+    let (process_sender, process_receiver) = mpsc::channel();
+
+    let process_socket_thread = process::start(process_receiver);
 
     let listener = TcpListener::bind("127.0.0.1:0")?;
 
@@ -20,11 +24,9 @@ fn main() -> std::io::Result<()> {
     println!("port {}", addr.port());
 
     loop {
-        let (mut sock, addr) = listener.accept()?;
+        let (sock, addr) = listener.accept()?;
 
-        let user_requests = read_requests(&mut sock)?;
-
-        println!("requets = {:?}", user_requests);
+        process_sender.send(ProcComm::Message(sock)).expect("Failed Send attempt to Process socket");
     }
 
     Ok(())
