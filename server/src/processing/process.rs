@@ -1,6 +1,6 @@
 
 use std::net::TcpStream;
-use std::sync::mpsc::{Sender, Receiver};
+use std::sync::mpsc::{Sender, Receiver, SendError};
 use std::thread::{self, JoinHandle};
 
 use crate::comms::stream::{read_requests};
@@ -33,5 +33,13 @@ fn process_stream(mut stream : TcpStream) {
 }
 
 pub fn stop(process_sender : Sender<ProcComm<TcpStream>> ) {
-    process_sender.send(ProcComm::Stop);
+    log_failure(process_sender.send(ProcComm::Stop));
+}
+
+
+fn log_failure<T>(x : Result<(), SendError<T>>) {
+    match x { 
+        Err(e) => println!("Sending in listening failed: {}", e),
+        _ => { },
+    }
 }

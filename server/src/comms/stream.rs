@@ -1,7 +1,7 @@
 use std::io::{Read, Error, ErrorKind, Cursor};
 use std::net::TcpStream;
 
-use super::data::{Request, UserRequests};
+use super::data::UserRequests;
 use super::parse::{parse_request, parse_id, parse_length};
 
 pub fn read_requests(stream : &mut TcpStream) -> std::io::Result<UserRequests> {

@@ -1,9 +1,9 @@
 
-use std::io::{self, Read};
+use std::io;
 
 pub fn start_blocking() {
 
-    let mut stdin = io::stdin();
+    let stdin = io::stdin();
     loop {
         let mut buffer = String::new();
         let result = stdin.read_line(&mut buffer);
