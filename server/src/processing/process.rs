@@ -1,6 +1,6 @@
 
 use std::net::TcpStream;
-use std::sync::mpsc::Receiver;
+use std::sync::mpsc::{Sender, Receiver};
 use std::thread::{self, JoinHandle};
 
 use crate::comms::stream::{read_requests};
@@ -30,4 +30,8 @@ fn process_stream(mut stream : TcpStream) {
         Ok(user_requests) => println!("USER REQUESTS"),
         Err(e) => println!("Encountered error while parsing TCP Stream: {}", e),
     }
+}
+
+pub fn stop(process_sender : Sender<ProcComm<TcpStream>> ) {
+    process_sender.send(ProcComm::Stop);
 }
