@@ -65,14 +65,16 @@ class Console:
             self.entry.append(event.unicode)
 
 def connect_to_server(self, sep):
-    values = sep[0].split(":")
+    values = sep[1].split(":")
     if len(values) != 2:
         limit_append(self.history, "Usage: connect_to_server x.y.z.w:port")
         return
-    port = convert_to_int(1, values[1:])
-    if not port:
+    port_list = convert_to_int(1, values[1:])
+    if not port_list:
         limit_append(self.history, "port must be an integer")
         return
+
+    port = port_list[0]
 
     limit_append(self.history, f"Attempting to connect to {values[0]}:{port}")
     success = GameServer.connect_to_server(values[0], port)

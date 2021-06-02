@@ -26,7 +26,7 @@ class Server:
     def connect_to_server(self, ip, port):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((ip, port))
-            output = create_request_packet([RequestPlayerId], 0)
+            output = create_request_packet([RequestPlayerId()], 0)
             s.sendall(output)
             #TODO wait for response that has player id
             #TODO if everything is okay, then we can set ip, port, and player_id
