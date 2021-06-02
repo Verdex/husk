@@ -7,12 +7,12 @@ mod data;
 mod comms;
 mod processing;
 mod network;
-mod console;
+mod console_mod;
 
-use processing::process;
 use data::{Stop, ProcComm};
-
+use processing::process;
 use network::listening;
+use console_mod::console;
 
 fn main() -> std::io::Result<()> {
 
@@ -22,6 +22,7 @@ fn main() -> std::io::Result<()> {
     let process_socket_thread = process::start(process_receiver);
     let listening_thread = listening::start(process_sender.clone(), listening_receiver)?;
 
+    console::start_blocking();
 
     process::stop(process_sender);
     listening::stop(listening_sender);
